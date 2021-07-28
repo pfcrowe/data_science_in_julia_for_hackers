@@ -32,12 +32,12 @@ md"""If there is one thing we can all agree on, it is that the reality in which 
 
 In order to give an explanation and gain a deeper understanding of the things we see, we tend to generate models that seek to explain them in a simple and generalized way. In this way we can reduce the noise of our observations to general rules that "govern" them.
 
-For example, it is obvious to everyone that if we push a glass it will move in the same direction as we did. We also know that if we keep pushing it and it goes beyond the limits of the table, it will fall to the floor. But one thing is to have the intuition of what's going to happen, and another is to have an understanding of the laws that govern that movement. In this case, they are the Newton´s Law´s of motion:
+For example, it is obvious to everyone that if we push a glass it will move in the same direction as we did. We also know that if we keep pushing it and it goes beyond the limits of the table, it will fall to the floor. But one thing is to have the intuition of what's going to happen, and another is to have an understanding of the laws that govern that movement. In this case, Newton´s second law of motion:
 
 """
 
 # ╔═╡ 4e4385b4-203b-11eb-0c5b-cbe41156401b
-md"$ \vec{F}^{\} = m*\vec{a}^{\}$"
+md"$\overrightarrow{F} = m * \overrightarrow{a}$"
 
 # ╔═╡ 2dca2f42-203b-11eb-2cb3-0d6a3823cdcd
 md"""In this way, and with only one formula, it is possible to gain an understanding that is generalizable to many aspects of reality. 
@@ -48,17 +48,17 @@ Now, it is worth noting that in this case all the variables that make up our mod
 
 In the case of a glass, we could weigh it with a scale. Then, by pushing it, we could measure the acceleration it acquired and from these two measurements we could obtain the force we applied to it. So, every parameter of the model is fully defined.
 
-However, as we try to advance in our understanding of reality, we arrive at more and more complex models and many times we are not so lucky to be able to define them with simple observable variables.
+However, as we try to advance in our understanding of reality, we arrive at more and more complex models and many times we are not so lucky as to be able to define them with simple observable variables.
 
-For example, this is very common in the economic sciences, where models are created with variables such as "quality of life". Economists will try to measure this latent variable with other variables that can be observed (such as GDP per capita, schooling rate, number of hospitals for a certain number of inhabitants, etc), but that do not have an obvious and direct relationship as if they had newton's equations.
+For example, this is very common in the economic sciences, where models are created with variables such as "quality of life". Economists will try to measure this latent variable with other variables that can be observed (such as GDP per capita, schooling rate, number of hospitals for a certain number of inhabitants, etc), but that do not have an obvious and direct relationship as if they had Newton's equations.
 
-This type of latent variables are used in different models to gain greater abstraction and to be able to obtain information that is not found at first sight in the data. For example, in the case of economics, from concrete measures of a country's economy it is possible to generalize knowledge and be able to infer an abstract variable such as quality of life.
+These type of latent variables are used in different models to gain greater abstraction and to be able to obtain information that is not found at first sight in the data. For example, in the case of economics, from concrete measures of a country's economy it is possible to generalize knowledge and be able to infer an abstract variable such as quality of life.
 
 ### Bayesian hierarchical models
 
 The Bayesian framework allows us to build statistical models that can generalize the information obtained from the data and make inferences from latent variables. 
 
-A nice way to think about this kind of models is that they allow us to build our "story" about which are the variables that generate the data we are observing. Basically, they allow us to increase the "depth" of our model by indicating that the parameters of our prior distributions also follow other probability distributions.
+A nice way to think about these kind of models is that they allow us to build our "story" about which are the variables that generate the data we are observing. Basically, they allow us to increase the "depth" of our model by indicating that the parameters of our prior distributions also follow other probability distributions.
 
 This sure is sounding very strange. Don't worry, let's move on to an example to clarify it.
 
