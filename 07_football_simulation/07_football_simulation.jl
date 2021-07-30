@@ -69,7 +69,7 @@ Let's imagine for a moment that we are brilliant statisticians. We find ourselve
 The problem is that, as they have never worked in this sector before, they only have the results of the league matches. So what can we do? """
 
 # ╔═╡ 0c0268dc-1ed3-11eb-2f73-b3706305b298
-md"We have the data stored in a specific format called JSON, so the first thing to do is to parse and visualize it"
+md"We have the data stored in a specific format called JSON, so the first thing to do is to parse and visualize it:"
 
 # ╔═╡ cbaaf72c-1eb4-11eb-3509-932b337f270b
 begin
@@ -104,18 +104,18 @@ teams = unique(collect(matches_df[:,1]))
 # ╔═╡ 868e5c8c-1ed3-11eb-291c-fb26d512c103
 md"""So, we have the data of the 380 matches that were played in the Premier League 2017/2018 and our challenge is to be able to analyze the characteristics of these teams. 
 
-A priori it may seem that we are missing data, that with the data we have we cannot infer "characteristics" specific to each team. At most, it might be possible to see who the teams that scored the most goals, the averages of goals per game or how the positions were after the tournament, but to obtain characteristics of the teams? how could we face this problem?
+A priori it may seem that we are missing data, that with the data we have we cannot infer "characteristics" specific to each team. At most, it might be possible to see who the teams that scored the most goals, the averages of goals per game or how the positions were after the tournament, but to obtain characteristics of the teams? How could we face this problem?
 
 #### Creating our stories
 
 Let's see what information we have from our data: 
-On one hand we have specified the names of each team and which one is local. On the other hand, we have the number of goals scored.
+on one hand we have specified the names of each team and which one is local. On the other hand, we have the number of goals scored.
 
 A possible approach to this data is to realize that the goals scored by each team can be modeled with a poisson distribution. 
 
 Why? You have to remember that this distribution describes "arrivals" - discrete events - in a continuum. For example, it is widely used to describe customer arrivals to a location as time passes or failures in continuous industrial processes (e.g. failure in the production of a pipe). 
 
-In this particular case, we could propose that the goals scored by a team are the discrete events that occur in the time continuum that the game last:
+In this particular case, we could propose that the goals scored by a team are the discrete events that occur in the time continuum that the game lasts:
 
 """
 
@@ -137,7 +137,7 @@ md"$θ_{team1} \sim att_{team1} + def_{team2}$"
 # ╔═╡ 9d0f3a1e-1f80-11eb-3422-fb7b4696cc13
 md"""In this way we could be capturing, from the results of each game, the attack and defence strengths of each team. 
 
-Another latent variable that we could obtain, given the data, is if there is an effect that increases (or decreases) the goal rate related to whether the team is local or not. This would also help - in case there is indeed an effect - in not the attack and defence parameters be disrupted by having to "contain" that information."""
+Another latent variable that we could obtain, given the data, is if there is an effect that increases (or decreases) the goal rate related to whether the team is local or not. This would also help - in case there is indeed an effect - in not disrupting the attack and defence parameters by having to "contain" that information."""
 
 # ╔═╡ 0b1f9c68-1f83-11eb-11e7-e7614c021c05
 md"$θ_{home} \sim home + att_{home} + def_{away}$
@@ -148,9 +148,9 @@ md"""This leaves one attack and one defense parameter for each team, and a globa
 
 #### Letting the information flow 
 
-We are already getting much closer to the initial goal we set. As a last step, we must be able to make the information flow between the two independent poissons that we proposed to model the score of each of the two teams that are playing. We need to do that precisely because we have proposed that the poissons are independent, but we need that when making the inference of the parameters the model can access the information from both scores so it can catch the correlation between them. In other words, we have to find a way to interconnect our model.
+We are already getting much closer to the initial goal we set. As a last step, we must be able to make the information flow between the two independent poissons that we proposed to model the score of each of the two teams that are playing. We need to do that precisely because we have proposed that the poissons are independent, but we need it so that when making the inference of the parameters the model can access the information from both scores and can catch the correlation between them. In other words, we have to find a way to interconnect our model.
 
-And that is exactly what hierarchical Bayesian models allow us to do. How? By letting us choose probability distributions for the parameters that represent the characteristics of both equipment. With the addition that these parameters will share the same prior distributions. Let's see how:
+And that is exactly what hierarchical Bayesian models allow us to do. How? By letting us choose probability distributions for the parameters that represent the characteristics of both teams, with the addition that these parameters will share the same prior distributions. Let's see how:
 
 The first thing to do, as we already know, is to assign the prior distributions of our attack and defense parameters. A reasonable idea would be to propose that they follow a normal distribution since it is consistent that there are some teams that have a very good defense, so the parameter would take negative values; or there may be others that have a very bad one, taking positive values (since they would "add up" to the goal rate of the opposing team). The normal distribution allows us to contemplate both cases.
 
@@ -180,7 +180,7 @@ md"We must not forget the parameter that represents the advantage of being local
 md"$home \sim Normal(0,1)$"
 
 # ╔═╡ 2b135202-1fa7-11eb-324d-93a5eda41e3e
-md"""Now that our model is fully define, let's add one last restriction to the characteristics of the teams to make it easier to compare them: subtract the average of all the attack and defence powers from each one. In this way we will have the features centred on zero, with negative values for the teams that have less attacking power than the average and positive values for those that have more. As we already said, the opposite analysis applies to the defence, negative values are the ones that will indicate that a team has a strong defence as they will be "subtracting" from the scoring rate of the opponent. This is equivalent to introducing the restriction:
+md"""Now that our model is fully defined, let's add one last restriction to the characteristics of the teams to make it easier to compare them: subtract the average of all the attack and defence powers from each one. In this way we will have the features centred on zero, with negative values for the teams that have less attacking power than the average and positive values for those that have more. As we already said, the opposite analysis applies to the defence, negative values are the ones that will indicate that a team has a strong defence as they will be "subtracting" from the scoring rate of the opponent. This is equivalent to introducing the restriction:
 """
 
 # ╔═╡ ddc7b166-203a-11eb-0ac2-056c309bb590
@@ -195,7 +195,7 @@ begin
 	@model function football_matches(home_teams, away_teams, score_home, score_away, teams)
 	#hyper priors
 	σatt ~ Exponential(1)
-	σdeff ~ Exponential(1)
+	σdef ~ Exponential(1)
 	μatt ~ Normal(0,0.1)
 	μdef ~ Normal(0,0.1)
 	
@@ -203,14 +203,14 @@ begin
 		
 	#Team-specific effects	
 	att ~ filldist(Normal(μatt, σatt), length(teams))
-	def ~ filldist(Normal(μatt, σdeff), length(teams))
+	def ~ filldist(Normal(μdef, σdef), length(teams))
 	
 	dict = Dict{String, Int64}()
 	for (i, team) in enumerate(teams)
 		dict[team] = i
 	end
 		
-	#Zero-sum constrains
+	#Zero-sum constraints
 	offset = mean(att) + mean(def)
 	
 	log_θ_home = Vector{Real}(undef, length(home_teams))
@@ -230,9 +230,9 @@ begin
 end
 
 # ╔═╡ f3f0b6f8-2033-11eb-0f9e-d951d791001d
-md"""As you can see, the turing code is very clear and direct. In the first block we define our hyperpriors for the distributions of the characteristics of the equipment.
+md"""As you can see, the Turing code is very clear and direct. In the first block we define our hyperpriors for the distributions of the characteristics of the teams.
 
-In the second one, we define the priors distributions that will encapsulate the information about the attack and defense powers of the teams. With the *filldist* function we are telling Turing that we need as many of these parameters as there are teams in the league *length(teams)*
+In the second one, we define the prior distributions that will encapsulate the information about the attack and defense powers of the teams. With the *filldist* function we are telling Turing that we need as many of these parameters as there are teams in the league *length(teams)*
 
 Then, we calculate the average of the defense and attack parameters that we are going to use to centralize those variables, and we use the LogPoisson distribution to allow the theta to take some negative value in the inference process and give more sensitivity to the parameters that make it up.
 
